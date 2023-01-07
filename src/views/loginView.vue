@@ -134,11 +134,22 @@ export default {
   height: 0.8em;
   position: absolute;
   left: 10%;
+  margin-top: 4px;
 }
 .down #lbl{
   font-family: 'Roboto Slab', serif;
   font-size: 16px;
   font-weight: 400;
+}
+.down #check:checked + #lbl:before{
+  background-image: url("../assets/checkmark.svg");
+  background-size: 15px 15px;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  background-color: #334363;
+  width: 0.99em;
+  height: 0.99em;
 }
 .down #btn-login{
   background-color: #334363;
@@ -188,6 +199,7 @@ export default {
   .down .input input{
     height: 50px;
     font-size: 16px;
+    border-width: 2px;
   }
   .down .input.pass{
     margin-top: 30px;
@@ -200,9 +212,14 @@ export default {
     width: 1em;
     height: 1em;
     left: 10%;
+    border: solid 2px #474747;
   }
   .down #lbl{
     font-size: 18px;
+    cursor: pointer;
+  }
+  .down #check:checked + #lbl:before{
+    background-size: 18px 18px;
   }
   .down #btn-login{
     width: 100%;
@@ -212,6 +229,7 @@ export default {
   .down .sign-up{
     font-size: 16px;
   }
+
 }
 
 @media only screen and (min-width: 901px){
