@@ -7,24 +7,52 @@
       </div>
       <div class="down">
         <h2>Sign in</h2>
-        <form action="">
+        <Form @submit="login(usuario)">
           <div class="input email">
-            <input type="email" name="email" id="email" placeholder="Email...">
+            <ErrorMessage class="check" name="email" v-slot="{ message }" ref="error-mail">
+              <span class="closem">
+                  <figure>
+                    <img src="../assets/iconos/close-circle.svg" alt="closemark">
+                    <figcaption> {{ message }} </figcaption>
+                  </figure>
+                </span>
+            </ErrorMessage>
+            <span v-show="msgError.email !== ''" id="span-err-email" class="closem">
+                  <figure>
+                    <img src="../assets/iconos/close-circle.svg" alt="closemark">
+                    <figcaption>{{ msgError.email }}</figcaption>
+                  </figure>
+                </span>
+            <Field v-model="usuario.email" type="email" name="email" id="email" placeholder="Email..." :rules="validateEmail"/>
           </div>
 
           <div class="input pass">
-            <input type="password" name="password" id="password" placeholder="Password...">
+            <ErrorMessage name="password" class="check" v-slot="{ message }">
+              <span class="closem">
+                  <figure>
+                    <img src="../assets/iconos/close-circle.svg" alt="closemark">
+                    <figcaption> {{ message }} </figcaption>
+                  </figure>
+              </span>
+            </ErrorMessage>
+            <span v-show="msgError.password !== ''" id="span-err-email" class="closem">
+                  <figure>
+                    <img src="../assets/iconos/close-circle.svg" alt="closemark">
+                    <figcaption>{{ msgError.password }}</figcaption>
+                  </figure>
+                </span>
+            <Field v-model="usuario.password" type="password" name="password" id="password" placeholder="Password..." :rules="require"/>
           </div>
 
           <div class="check">
-            <input type="checkbox" id="check" value="1" >
+            <Field name="checkRemember" type="checkbox" id="check" value="1" />
             <label id="lbl" for="check">Remember me</label>
           </div>
 
           <input type="submit" value="Login" id="btn-login">
-        </form>
+        </Form>
         <div class="sign-up">
-          <p>Don't have an account yet?</p> <router-link to="#">Sign up </router-link>
+          <p>Don't have an account yet?</p> <router-link to="/register">Sign up </router-link>
         </div>
         <!--<div class="separador">
           <div class="linea">&nbsp;</div>
@@ -36,8 +64,69 @@
 </template>
 
 <script>
+import {Form, Field, ErrorMessage} from 'vee-validate';
+import authModule from '../store/modules/auth';
+import {msg} from "@babel/core/lib/config/validation/option-assertions";
+import {mapActions} from "vuex";
 export default {
+  data(){
+    return{
+      usuario: {
+        email: "",
+        password: ""
+      },
+      msgError: {
+        email: "",
+        password: ""
+      }
+    }
+  },
   name: "LoginView",
+  methods: {
+    msg,
+    ...mapActions('auth', ['login']),
+    /*async onSubmit(usuario){
+      const res = await authModule.action.login(usuario);
+      console.log(res);
+      if(res.error !== true){
+        await authModule.mutations.setToken(res.data.token)
+        this.$cookies.set('auth-sesion', res.data.token, '2d', '/', '','true')
+      }else{
+        if(res.msg.indexOf('Usuario') !== -1) {this.msgError.email = res.msg}
+        else this.msgError.password = res.msg
+      }
+
+
+
+    },*/
+    validateEmail(value) {
+      // if the field is empty
+      if (!value) {
+        return 'This field is required';
+      }
+      // if the field is not a valid email
+      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (!regex.test(value)) {
+        return 'This field must be a valid email';
+      }
+      // All is good
+      return true;
+    },
+    require(value) {
+      if (!value || !value.length) {
+        return 'This field is required';
+      }
+      return true;
+    }
+  },
+  components: {
+    Form,
+    Field,
+    ErrorMessage
+  },
+  module: {
+    authModule
+  }
 }
 </script>
 
@@ -100,6 +189,29 @@ export default {
   font-family: 'Roboto Slab', serif;
   font-weight: bold;
 }
+.down form .input span {
+  position: absolute;
+  right: 11%;
+  margin-top: 8px;
+}
+.down form .input figcaption {
+  display: none;
+  transition: all .5s;
+}
+.down form .input figure:hover > figcaption{
+  display: block;
+  position: absolute;
+  transition: all .5s;
+  top: -90%;
+  background-color: black;
+  width: 120px;
+  font-size: 10px;
+  padding: 7px 5px;
+  border-radius: 5px;
+  font-family: 'Overpass', sans-serif;
+  text-align: center;
+}
+
 .down .input input{
   height: 40px;
   width: 100%;
@@ -162,6 +274,7 @@ export default {
   font-size: 16px;
   font-weight: 400;
   margin-bottom: 15px;
+  cursor: pointer;
 }
 .down .sign-up{
   display:flex;
@@ -200,6 +313,11 @@ export default {
     height: 50px;
     font-size: 16px;
     border-width: 2px;
+  }
+  .down form .input span {
+    position: absolute;
+    right: 12%;
+    margin-top: 10px;
   }
   .down .input.pass{
     margin-top: 30px;
@@ -246,6 +364,11 @@ export default {
     margin-left: 10%;
     font-size: 32px;
   }
+  .down form .input span {
+    position: absolute;
+    right: 7%;
+    margin-top: 10px;
+  }
   .top p{
     margin-left: 10%;
     font-size: 20px;
@@ -253,6 +376,9 @@ export default {
   }
   .down{
     padding: 5%;
+  }
+  .down form .input figure:hover > figcaption{
+    left: -80%;
   }
   .down #lbl:before{
     content:"";

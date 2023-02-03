@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import loginView from "@/views/loginView.vue";
 import registerView from "@/views/RegisterView.vue"
-import store from "@/store";
+import {state} from "../store/modules/auth"
 
 const routes = [
   {
@@ -43,7 +43,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const rutaProtegida = to.matched.some(record => record.meta.requireAuth);
 
-    if(rutaProtegida && store.state.token === null){
+    if(rutaProtegida && state.token === null){
         next({name: "login"})
     }else{
       next()

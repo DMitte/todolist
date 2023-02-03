@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
+import authModule from './modules/auth'
 
 export default createStore({
   state: {
-    token: null
   },
   getters: {
   },
@@ -11,5 +11,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    namespaced: true,
+    auth: authModule
   }
 })
