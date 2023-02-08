@@ -111,7 +111,7 @@ export default {
   methods: {
     useFieldError,
     async onSubmit(usuario) {
-      const res = await authModule.action.register(usuario);
+      const res = await authModule.actions.register(usuario);
       const msg = res.msg;
       if(msg !== undefined){
         if(msg.indexOf('Email') !== -1) {this.emailError = true}
@@ -146,6 +146,11 @@ export default {
   },
   modules:{
     authModule
+  },
+  created() {
+    if(this.$cookies.isKey('auth-sesion') === true){
+      this.$router.push('/');
+    }
   }
 }
 </script>

@@ -1,43 +1,57 @@
-const namespaced = true
-const state = {
-    token: null
-}
-const mutations = {
-    setToken(state, payload){
-        this.state.token = payload
-    }
-}
-const action = {
-    async register(usuario){
-        try{
-            const res = await fetch('http://localhost:3001/api/user/register',{
-                method: 'POST',
-                headers: {'Content-Type': 'application/json',},
-                body: JSON.stringify(usuario)
-            })
-            const usuDB = await res.json();
-            return usuDB;
-        }catch (e){
-            console.log('error:', e);
+import VueCookies from 'vue-cookies'
+import router from "@/router";
+
+
+export default {
+    namespaced: true,
+    state : {
+        token: null
+    },
+    mutations : {
+        setToken(state,payload){
+            state.token = payload
         }
     },
-    async login ({commit}, usuario){
-        try{
-            const res = await fetch('http://localhost:3001/api/user/login', {
-                method:'POST',
-                headers: {'Content-Type': 'application/json',},
-                body: JSON.stringify(usuario)
-            })
-            const usuDB = await res.json();
-            commit('setToken', usuDB.data.token);
-            this.$cookies.set('auth-sesion', usuDB.data.token, '2d', '/', '','true')
+    actions : {
+        async register(usuario){
+            try{
+                const res = await fetch('http://localhost:3001/api/user/register',{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json',},
+                    body: JSON.stringify(usuario)
+                })
+                const usuDB = await res.json();
+                return usuDB;
+            }catch (e){
+                console.log('error:', e);
+            }
+        },
+        async login({commit}, usuario){
+            try{
+                const res = await fetch('http://localhost:3001/api/user/login', {
+                    method:'POST',
+                    headers: {'Content-Type': 'application/json',},
+                    body: JSON.stringify(usuario)
+                })
+                const usuDB = await res.json();
+                commit('setToken', usuDB.data.token);
+                VueCookies.set('auth-sesion', usuDB.data.token, {expire: '1d'});
+                router.push('/')
 
-        }catch (e) {
-            console.log('error:', e);
-        }
-    }
+            }catch (e) {
+                console.log('error:', e);
+            }
+        },
+        obtenerToken({commit}){
+            if(VueCookies.isKey('auth-sesion') === true){
+                commit('setToken', VueCookies.get('auth-sesion'))
+            }else{
+                commit('setToken', null)
+            }
+        },
+    },
+    getters : {}
 }
-const getter ={}
 
-module.exports = {namespaced,state, mutations, action, getter}
+
 

@@ -6,7 +6,18 @@
   </nav>
   <router-view/>
 </template>
+<script>
+import {mapActions} from "vuex";
 
+export default {
+  methods: {
+    ...mapActions('auth', ['obtenerToken'])
+  },
+  created() {
+    this.obtenerToken();
+  }
+}
+</script>
 <style>
 *{
   margin: 0;

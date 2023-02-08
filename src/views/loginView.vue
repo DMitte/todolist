@@ -66,7 +66,6 @@
 <script>
 import {Form, Field, ErrorMessage} from 'vee-validate';
 import authModule from '../store/modules/auth';
-import {msg} from "@babel/core/lib/config/validation/option-assertions";
 import {mapActions} from "vuex";
 export default {
   data(){
@@ -83,10 +82,9 @@ export default {
   },
   name: "LoginView",
   methods: {
-    msg,
     ...mapActions('auth', ['login']),
     /*async onSubmit(usuario){
-      const res = await authModule.action.login(usuario);
+      const res = await authModule.actions.login(usuario);
       console.log(res);
       if(res.error !== true){
         await authModule.mutations.setToken(res.data.token)
@@ -126,6 +124,11 @@ export default {
   },
   module: {
     authModule
+  },
+  created() {
+    if(this.$cookies.isKey('auth-sesion') === true){
+      this.$router.push('/');
+    }
   }
 }
 </script>
