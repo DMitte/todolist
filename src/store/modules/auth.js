@@ -35,7 +35,7 @@ export default {
                 })
                 const usuDB = await res.json();
                 commit('setToken', usuDB.data.token);
-                VueCookies.set('auth-sesion', usuDB.data.token, {expire: '1d'});
+                VueCookies.set('auth-sesion', usuDB.data.token, '1d');
                 router.push('/')
 
             }catch (e) {
