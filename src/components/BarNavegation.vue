@@ -51,6 +51,7 @@ export default {
         left: 0;
         padding-left: 20%;
         display: none;
+        z-index: 1;
         animation: abrir 500ms linear 0s reverse;
     }
     nav.isActive{
