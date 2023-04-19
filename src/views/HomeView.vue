@@ -117,105 +117,8 @@
           </div>
         </div>
       </section>
-      <section>
-        <div class="separador">
-          <div class="linea"></div>
-          <div class="linea2"></div>
-        </div>
-        <div class="main">
-          <div class="day-calendar">
-            <h3 class="">31</h3>
-            <p class="month">Ene</p>
-            <p class="day">Vie</p>
-          </div>
-          <div class="card-main">
-            <div class="card">
-              <div class="left">
-                <h4>11pm - 2pm</h4>
-                <p class="title">Meeteng discord with sam</p>
-                <div class="tags">
-                  <div class="one">
-                    <p>meet</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right">
-                <div class="more-icon">
-                  <button> <img src="@/assets/iconos/btn-more.svg" alt="more btn"> </button>
-                </div>
-              </div>
-            </div>
-            <hr>
-            <div class="card">              
-              <div class="left">
-                <h4>11pm - 2pm</h4>
-                <p class="title">Meeteng discord with sam</p>
-                <div class="tags">
-                  <div class="one">
-                    <p>meet</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right">
-                <div class="more-icon">
-                  <button> <img src="@/assets/iconos/btn-more.svg" alt="more btn"> </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section>
-        <div class="separador">
-          <div class="linea"></div>
-          <div class="linea2"></div>
-        </div>
-        <div class="main">
-          <div class="day-calendar">
-            <h3 class="">31</h3>
-            <p class="month">Ene</p>
-            <p class="day">Vie</p>
-          </div>
-          <div class="card-main">
-            <div class="card">
-              <div class="left">
-                <h4>11pm - 2pm</h4>
-                <p class="title">Meeteng discord with sam</p>
-                <div class="tags">
-                  <div class="one">
-                    <p>meet</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right">
-                <div class="more-icon">
-                  <button> <img src="@/assets/iconos/btn-more.svg" alt="more btn"> </button>
-                </div>
-              </div>
-            </div>
-            <hr>
-            <div class="card">              
-              <div class="left">
-                <h4>11pm - 2pm</h4>
-                <p class="title">Meeteng discord with sam</p>
-                <div class="tags">
-                  <div class="one">
-                    <p>meet</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right">
-                <div class="more-icon">
-                  <button> <img src="@/assets/iconos/btn-more.svg" alt="more btn"> </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <div class="btn-add">
-        <button> <img src="@/assets/iconos/btn-add.svg" alt="Add Icons"> </button>
-      </div>
+      
+      <AddTask/>
     </div>
   </div>
 </template>
@@ -224,6 +127,7 @@
 // @ is an alias to /src
 import BarNavegation from "@/components/BarNavegation.vue";
 import cardMessageTP from "@/components/cardMessageTP.vue";
+import AddTask from '@/components/add-task.vue';
 export default {
   data() {
     return {
@@ -237,7 +141,8 @@ export default {
   name: 'HomeView',
   components: {
     cardMessageTP,
-    BarNavegation
+    BarNavegation,
+    AddTask
   },
   methods: {
     toggleSidebar() {
@@ -469,17 +374,5 @@ export default {
     background-color: transparent;
     border: none;
   }
-  .btn-add{
-    position: fixed;
-    right: 35px;
-    bottom: 25px;
-    
-  }
-  .btn-add button{
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #D9D9D9;
-    border: none;
-  }
+  
 }</style>
