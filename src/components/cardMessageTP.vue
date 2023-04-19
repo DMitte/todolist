@@ -15,9 +15,9 @@
           <router-link to="/">Privacy Policy</router-link>
         </div>
         <div class="social-networks">
-          <a href="#"><img src="@/assets/iconos/btn-facebook.svg" alt=""></a>
-          <a href="#"><img src="@/assets/iconos/icon-instagram.svg" alt=""></a>
-          <a href="#"><img src="@/assets/iconos/icon-linkedin.svg" alt=""></a>
+          <a href="#"><img src="@/assets/iconos/btn-facebook.svg" alt="face"></a>
+          <a href="#"><img src="@/assets/iconos/icon-instagram.svg" alt="insta"></a>
+          <a href="#"><img src="@/assets/iconos/icon-linkedin.svg" alt="linke"></a>
         </div>
       </nav>
     </div>
