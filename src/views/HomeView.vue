@@ -3,122 +3,141 @@
     <cardMessageTP class="cardMessageTP" />
 
     <BarNavegation class="sidebar" />
-    <div class="content">
-      <div class="firts">
-        <h1>UPCOMING EVENT</h1>
-        <div class="btns">
-          <button class="calendar-btn"><img src="@/assets/iconos/btn-calendar.svg" alt="calendar icon"></button>
-          <button class="search-btn"><img src="@/assets/iconos/btn-search.svg" alt="search icon"></button>
+
+    <div class="main">
+      <div class="top">
+        <h1>To Do</h1>
+        <div class="date">
+          <p>Monday, May 18</p>
+          <img src="@/assets/iconos/icon-calendar.svg" alt="icon calendar" />
         </div>
       </div>
-      <div class="days-next">
-        <div class="card">
-          <img src="@/assets/defectImg/sandia.jpg" alt="Sandia Img">
-          <div class="days-left">
-            <h3>Marzo - <span>09</span></h3>
-            <p>11 days left</p>
+      <div class="calendar">
+        <ul>
+          <li>
+            <p class="day">S</p>
+            <p class="number">21</p>
+          </li>
+          <li>
+            <p class="day">M</p>
+            <p class="number">22</p>
+          </li>
+          <li>
+            <p class="day">T</p>
+            <p class="number">23</p>
+          </li>
+          <li class="active">
+            <p class="day">W</p>
+            <p class="number">24</p>
+          </li>
+          <li>
+            <p class="day">T</p>
+            <p class="number">25</p>
+          </li>
+          <li>
+            <p class="day">F</p>
+            <p class="number">26</p>
+          </li>
+          <li>
+            <p class="day">S</p>
+            <p class="number">27</p>
+          </li>
+        </ul>
+      </div>
+      <hr />
+      <div class="cards">
+        <router-link
+          class="card"
+          v-for="tasks in alltasks"
+          v-bind:key="tasks.id"
+          :to="`/details/${tasks._id}`"
+        >
+          <div class="text">
+            <h3>{{ tasks.title }}</h3>
+            <p>{{ tasks.timet }}</p>
           </div>
-        </div>
+          <div class="complete" v-bind:class="{ check: tasks.complete }">
+            <img src="@/assets/iconos/check.svg" alt="check icon" />
+          </div>
+        </router-link>
       </div>
 
-      <section>
-        <div class="separador">
-          <div class="linea"></div>
-          <div class="linea2"></div>
-        </div>
-        <div class="main">
-          <div class="day-calendar">
-            <h3 class="active">20</h3>
-            <p class="month">Mar</p>
-            <p class="day">lun</p>
-          </div>
-          <div class="card-main">
-            <div class="card">
-              <div class="left">
-                <h4>11pm - 2pm</h4>
-                <p class="title">Meeteng discord with sam</p>
-                <div class="tags">
-                  <div class="one">
-                    <p>meet</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right">
-                <div class="more-icon">
-                  <button> <img src="@/assets/iconos/btn-more.svg" alt="more btn"> </button>
-                </div>
-              </div>
+      <div class="footer">
+        <button @click="Active = !Active">
+          <img src="@/assets/iconos/plus.svg" alt="plus icono" />
+          <span>Create New</span>
+        </button>
+      </div>
+
+      <transition duration="550" name="nested">
+        <div class="cardNew" v-if="Active">
+          <div class="newTask inner">
+            <div class="top">
+              <div class="line"></div>
+              <h3>New Task ToDo</h3>
             </div>
-            <hr>
-            <div class="card">              
-              <div class="left">
-                <h4>11pm - 2pm</h4>
-                <p class="title">Meeteng discord with sam</p>
-                <div class="tags">
-                  <div class="one">
-                    <p>meet</p>
+
+            <hr />
+
+            <div class="form">
+              <Form @submit="onSubmit()">
+                <div class="primary">
+                  <div class="inputs">
+                    <label for="title">Title</label>
+                    <Field
+                      v-model="taskInfo.title"
+                      type="text"
+                      name="title"
+                      id="title"
+                    />
+                  </div>
+                  <div class="inputs">
+                    <label for="Description">Description</label>
+                    <textarea
+                      v-model="taskInfo.descript"
+                      name="description"
+                      id="description"
+                      cols="20"
+                      rows="10"
+                    ></textarea>
                   </div>
                 </div>
-              </div>
-              <div class="right">
-                <div class="more-icon">
-                  <button> <img src="@/assets/iconos/btn-more.svg" alt="more btn"> </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section>
-        <div class="separador">
-          <div class="linea"></div>
-          <div class="linea2"></div>
-        </div>
-        <div class="main">
-          <div class="day-calendar">
-            <h3 class="">31</h3>
-            <p class="month">Ene</p>
-            <p class="day">Vie</p>
-          </div>
-          <div class="card-main">
-            <div class="card">
-              <div class="left">
-                <h4>11pm - 2pm</h4>
-                <p class="title">Meeteng discord with sam</p>
-                <div class="tags">
-                  <div class="one">
-                    <p>meet</p>
+                <div class="secundary">
+                  <div class="inputs">
+                    <label for="date">Date</label>
+                    <Field
+                      type="date"
+                      name="date"
+                      id="date"
+                      v-model="taskInfo.startDate"
+                    />
+                  </div>
+                  <div class="inputs">
+                    <label for="time">Time</label>
+                    <Field
+                      type="time"
+                      name="time"
+                      id="time"
+                      v-model="taskInfo.time"
+                    />
                   </div>
                 </div>
-              </div>
-              <div class="right">
-                <div class="more-icon">
-                  <button> <img src="@/assets/iconos/btn-more.svg" alt="more btn"> </button>
+
+                <div class="buttons">
+                  <button
+                    class="btn-secundary"
+                    type="button"
+                    @click="Active = !Active"
+                  >
+                    Cancel
+                  </button>
+                  <button class="btn-primary" type="submit">Guardar</button>
                 </div>
-              </div>
-            </div>
-            <hr>
-            <div class="card">              
-              <div class="left">
-                <h4>11pm - 2pm</h4>
-                <p class="title">Meeteng discord with sam</p>
-                <div class="tags">
-                  <div class="one">
-                    <p>meet</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right">
-                <div class="more-icon">
-                  <button> <img src="@/assets/iconos/btn-more.svg" alt="more btn"> </button>
-                </div>
-              </div>
+              </Form>
             </div>
           </div>
         </div>
-      </section>
-      
-      <AddTask/>
+      </transition>
     </div>
   </div>
 </template>
@@ -127,37 +146,62 @@
 // @ is an alias to /src
 import BarNavegation from "@/components/BarNavegation.vue";
 import cardMessageTP from "@/components/cardMessageTP.vue";
-import AddTask from '@/components/add-task.vue';
+import { Form, Field } from "vee-validate";
+/*import Datepicker from 'vue3-datepicker'*/
+import { mapState, mapActions } from "vuex";
+import taskModule from "../store/modules/task";
 export default {
   data() {
     return {
-      isSidebarVisible: true,
-      items: [
-        { title: 'This Week', isOpen: false, todoList: [{ id: 1, title: 'Prueba de que funciona', complete: false }, { id: 2, title: 'Prueva2', complete: false }] },
-        { title: 'This Month', isOpen: false, todoList: [] }
-      ]
+      taskInfo: {
+        title: "",
+        startDate: "",
+        descript: "",
+        time: "",
+      },
+      Active: false,
+      alltasks: {},
+    };
+  },
+  created() {
+    taskModule.actions.allTask().then((r) => (this.alltasks = r));
+    if (this.$cookies.isKey("auth-sesion") === true) {
+      taskModule.state.token = this.$cookies.get("auth-sesion");
     }
   },
-  name: 'HomeView',
+  computed: {
+    ...mapState("task", ["tasks"]),
+  },
+  name: "HomeView",
   components: {
     cardMessageTP,
     BarNavegation,
-    AddTask
+    /*Datepicker*/
+    Form,
+    Field,
   },
-  methods: {
-    toggleSidebar() {
-      this.isSidebarVisible = !this.isSidebarVisible
-    }
-  }
 
-}
+  methods: {
+    ...mapActions("task", ["obtenerToken", "allTask"]),
+    onSubmit() {
+      taskModule.actions.aggtask(this.taskInfo).then((Resultado) => {
+        if (Resultado.msg != null) {
+          this.alltasks.push(Resultado.data);
+          this.taskInfo.title = "";
+          this.taskInfo.descript = "";
+          this.taskInfo.startDate = "";
+          this.taskInfo.time = "";
+        }
+      });
+    },
+  },
+};
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
 
 .sidebar {
   display: none;
-
 }
 
 .content {
@@ -177,202 +221,277 @@ export default {
   .sidebar {
     display: flex;
   }
-
-  .content {
-    display: block;
-    padding-bottom: 25px;
-    background-color: #202020;
+  .main {
+    font-family: "Ubuntu", sans-serif;
+    color: white;
   }
-
-  .firts {
+  .top {
     display: flex;
     justify-content: space-between;
-    padding: 25px;
-    color: white;
-    font-family: 'Ubuntu', sans-serif;
-  }
-
-  .firts h1 {
-    font-size: 20px;
-    font-weight: 500;
-    width: 120px;
-  }
-
-  .firts .btns {
-    display: flex;
-    gap: 16px;
-  }
-
-  .firts .btns button {
-    width: 40px;
-    height: 40px;
-    background-color: transparent;
-    border: 1px #fff solid;
-    border-radius: 50%;
-  }
-
-  .days-next {
     padding: 0 25px;
-    font-family: 'Ubuntu', sans-serif;
+    margin-top: 15px;
   }
-
-  .days-next .card {
-    height: 70px;
+  .top h1 {
+    font-size: 40px;
+    font-weight: 500;
+  }
+  .top .date {
     display: flex;
-    background-color: #fff;
-    border-radius: 20px;
-    position: relative;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
   }
-
-  .days-next .card img {
-    width: 70px;
-    height: 70px;
-    border-radius: 20px 0 0 20px;
-    object-fit: cover;
+  .top .date p {
+    font-size: 15px;
+    font-weight: 500;
+    color: #949494;
   }
-
-  .days-next .card .days-left {
-    position: absolute;
-    right: 25px;
-    height: 100%;
+  .top .date img {
+    width: 24px;
+  }
+  .calendar ul {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    list-style: none;
+    margin-top: 20px;
+  }
+  .calendar ul li {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    text-align: right;
+    width: 38px;
+    height: 56px;
+    border-radius: 10px;
+    gap: 5px;
   }
-
-  .days-left .card .days-left h3 {
+  .calendar ul li.active {
+    background-color: rgba(104, 148, 236, 0.5);
+  }
+  .calendar ul li.active .day {
+    color: white;
+  }
+  .calendar ul li .day {
+    color: #9f9f9f;
+    font-weight: 500;
+    font-size: 15px;
+  }
+  hr {
+    border-color: rgba(151, 150, 150, 0.12);
+  }
+  .cards {
+    margin-top: 30px;
+    padding: 0 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 60vh;
+    overflow: scroll;
+  }
+  .cards .card {
+    text-decoration: none;
+    background-color: #2d2d2d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    border-radius: 15px;
+  }
+  .cards .card .text h3 {
     font-size: 16px;
-    width: 400;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
   }
-
-  .days-left .card .days-left h3 span {
-    width: 300;
-  }
-
-  .days-left .card .days-left p {
+  .cards .card p {
     font-size: 12px;
-
+    font-weight: 400;
+    color: rgba(124, 124, 124, 0.77);
+    margin-top: 7px;
   }
-
-  .separador {
-    padding: 20px 30px;
-    width: 100%;
-    margin: auto;
+  .cards .card .text h3.line {
+    text-decoration: line-through;
+  }
+  .cards .card .complete {
+    border: 2px solid #a1a0a0;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-
-  .separador .linea {
-    height: 1px;
-    width: 20%;
-    background-color: #3E3A3A;
+  .cards .card .complete img {
+    display: none;
   }
-
-  .separador .linea2 {
-    height: 1px;
-    width: 80%;
-    background-color: #FFFFFF;
+  .cards .card .complete.check {
+    border: none;
+    background-color: rgba(104, 148, 236, 0.5);
   }
-
-  .day-calendar {
-    color: white;
-    font-family: 'Ubuntu', sans-serif;
-    padding: 0 0 0 25px;
+  .cards .card .complete.check img {
+    display: block;
   }
-
-  .day-calendar h3 {
-    font-size: 30px;
-    font-weight: 400;
-  }
-
-  .day-calendar h3.active {
-    position: relative;
-    background-color: white;
-    color: black;
-    left: -25px;
-    padding: 5px 0 5px 25px;
-    width: 5rem;
-    border-radius: 0 10px 10px 0;
-  }
-  .day-calendar h3{
-    position: relative;
-    background-color: transparent;
-    color: white;
-    left: -25px;
-    padding: 5px 0 5px 25px;
-    width: 5rem;
-    border-radius: 0 10px 10px 0;
-  }
-
-  .day-calendar .month {
-    margin-top: 8px;
-    font-size: 16px;
-    font-weight: 400;
-  }
-
-  .day-calendar .day {
-    margin-top: 1px;
-    font-size: 300;
-    color: #818181;
-    font-size: 14px;
-  }
-
-  section .main {
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
     display: flex;
+    justify-content: center;
+    padding: 20px 26px;
   }
-  section .main .card-main{
+  .footer button {
     width: 100%;
+    height: 45px;
+    background-color: rgba(104, 148, 236, 0.5);
+    border: none;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    gap: 10px;
+  }
+  .footer button span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .cardNew {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(217, 217, 217, 0.09);
+    top: 0;
+    backdrop-filter: blur(8px);
+    z-index: 20;
+  }
+  .cardNew.active {
+    display: block;
+  }
+  .cardNew .newTask {
+    background-color: #292929;
+    position: absolute;
+    bottom: 0px;
+    width: 100vw;
+    height: 90%;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -50 30 0 rgb(255, 255, 255);
+    z-index: 30;
+  }
+  .cardNew .newTask .top {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    
+    justify-content: center;
+    align-items: center;
   }
-  section .main .card-main hr{
-    width: 93%;
-    margin-left: -10px;
-    border: 1px solid #3D3D3D
+  .cardNew .newTask .top .line {
+    border: 2px solid #898989;
+    width: 40%;
+    border-radius: 50px;
+    margin-bottom: 20px;
   }
-  section .main .card-main .card {
-    color: white;
-    font-family: 'Ubuntu', sans-serif;
-    display: flex;
-    justify-content: space-between;
-    margin-left: -8px;
+  .cardNew .newTask .top h3 {
+    font-weight: 500;
+    font-size: 20px;
+    font-family: "Ubuntu", sans-serif;
+  }
+  .cardNew .newTask hr {
+    margin: auto;
+    margin-top: 15px;
+    background-color: #3e3e3e;
     width: 90%;
   }
-
-  section .main .card-main .left h4 {
-    font-size: .6rem;
+  .form {
+    padding: 10px 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .form .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 15px;
+  }
+  .form .inputs label {
+    font-size: 16px;
+    color: #d2d2d2;
     font-weight: 400;
   }
-
-  section .main .card-main .left p.title {
-    margin-top: 10px;
-    font-size: .8rem;
-  }
-
-  section .main .card-main .left .tags {
-    margin-top: 12px;
-    display: flex;
-    gap: 5px;
-  }
-
-  section .main .card-main .left .tags p {
-    background-color: #5C69DB;
-    padding: 4px 15px;
-    border-radius: 10px;
-    font-size: 12px;
-  }
-
-  section .main .card-main .right {
-    right: 0px;
-  }
-
-  section .main .card-main .right button {
+  .form .inputs input {
+    height: 40px;
     background-color: transparent;
     border: none;
+    border: 2px solid rgba(71, 71, 71, 0.9);
+    border-radius: 15px;
+    padding: 0 20px;
+    color: white;
   }
-  
-}</style>
+  .form .inputs input:focus,
+  .form .inputs textarea:focus {
+    outline: none;
+    border-color: rgba(67, 98, 161, 0.8);
+  }
+  .form .inputs textarea {
+    background-color: transparent;
+    border-radius: 15px;
+    border: 2px solid rgba(71, 71, 71, 0.9);
+    color: white;
+    padding: 15px 20px;
+  }
+  .form .secundary {
+    display: flex;
+    gap: 5%;
+  }
+  .form .secundary input {
+    width: 9rem;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 2px;
+    opacity: 0.9;
+    filter: invert(0.9);
+  }
+  .form .buttons {
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+    gap: 50px;
+  }
+  .form .buttons button {
+    width: 150px;
+    height: 45px;
+    border-radius: 15px;
+    border: none;
+  }
+  .form .buttons button.btn-primary {
+    background-color: rgba(104, 148, 236, 0.5);
+    color: white;
+  }
+  .form .buttons button.btn-secundary {
+    background-color: transparent;
+    border: 2px solid rgba(104, 148, 236, 0.5);
+    color: #6894ec;
+  }
+  /*Transition animation form */
+  .nested-enter-active,
+  .nested-leave-active {
+    transition: opacity 0.5s ease;
+  }
+  .nested-enter-from,
+  .nested-leave-to {
+    opacity: 0;
+  }
+  .nested-enter-active .inner,
+  .nested-leave-active .inner {
+    transition: all 0.3s ease-in-out;
+  }
+  .nested-enter-from .inner,
+  .nested-leave-to .inner {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+}
+</style>

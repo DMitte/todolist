@@ -80,7 +80,7 @@
 
       <div class="sign-in">
         <p>Already have an account?</p>
-        <router-link to="#">Sign in</router-link>
+        <router-link to="/">Sign in</router-link>
       </div>
     </div>
   </div>
