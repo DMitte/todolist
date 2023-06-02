@@ -14,6 +14,7 @@ export default {
       state.tasks = payload;
     },
   },
+
   actions: {
     /*obtenerToken({ commit }) {
       if (VueCookies.isKey("auth-sesion") === true) {
@@ -71,6 +72,46 @@ export default {
           body: JSON.stringify(tareaInfo),
         });
 
+        return res.json();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async deleteTask(idTask) {
+      try {
+        const token = VueCookies.get("auth-sesion");
+        const res = await fetch(
+          `http://localhost:3000/api/task/delete/${idTask}`,
+          {
+            method: "DELETE",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": token,
+            },
+          }
+        );
+        const confirm = await res.json();
+        return confirm;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async editTask(idTask, taskInfo) {
+      try {
+        const token = VueCookies.get("auth-sesion");
+        const res = await fetch(
+          `http://localhost:3000/api/task/update/${idTask}`,
+          {
+            method: "PUT",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": token,
+            },
+            body: JSON.stringify(taskInfo),
+          }
+        );
         return res.json();
       } catch (e) {
         console.log(e);

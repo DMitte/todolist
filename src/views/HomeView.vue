@@ -7,40 +7,21 @@
     <div class="main">
       <div class="top">
         <h1>To Do</h1>
-        <div class="date">
-          <p>Monday, May 18</p>
+        <div class="date" @click="isActiveDate = !isActiveDate">
+          <p>{{ day_Format }}</p>
           <img src="@/assets/iconos/icon-calendar.svg" alt="icon calendar" />
         </div>
       </div>
       <div class="calendar">
         <ul>
-          <li>
-            <p class="day">S</p>
-            <p class="number">21</p>
-          </li>
-          <li>
-            <p class="day">M</p>
-            <p class="number">22</p>
-          </li>
-          <li>
-            <p class="day">T</p>
-            <p class="number">23</p>
-          </li>
-          <li class="active">
-            <p class="day">W</p>
-            <p class="number">24</p>
-          </li>
-          <li>
-            <p class="day">T</p>
-            <p class="number">25</p>
-          </li>
-          <li>
-            <p class="day">F</p>
-            <p class="number">26</p>
-          </li>
-          <li>
-            <p class="day">S</p>
-            <p class="number">27</p>
+          <li
+            v-for="(item, index) in daysWeekend"
+            :key="index"
+            v-bind:class="{ active: item == this.dayFecha }"
+          >
+            <!--@click="(this.dayFecha = item), this.dayFormat(item)"-->
+            <p class="day">{{ letterDays[index] }}</p>
+            <p class="number">{{ item.substring(8, 10) }}</p>
           </li>
         </ul>
       </div>
@@ -138,6 +119,22 @@
           </div>
         </div>
       </transition>
+
+      <!--<div class="cardDate" v-if="isActiveDate">
+        <div class="datepicker">
+          <div class="datepi">
+            <DatePicker
+              v-model="this.fecha"
+              mode="date"
+              title-position="left"
+              is-dark
+            />
+          </div>
+
+          <hr />
+        </div>
+        <div class="exitDate" @click="isActiveDate = !isActiveDate"></div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -147,20 +144,28 @@
 import BarNavegation from "@/components/BarNavegation.vue";
 import cardMessageTP from "@/components/cardMessageTP.vue";
 import { Form, Field } from "vee-validate";
-/*import Datepicker from 'vue3-datepicker'*/
 import { mapState, mapActions } from "vuex";
 import taskModule from "../store/modules/task";
+import moment from "moment";
+//import { DatePicker } from "v-calendar";
+import "v-calendar/style.css";
 export default {
   data() {
     return {
       taskInfo: {
         title: "",
-        startDate: "",
+        startDate: new Date(),
         descript: "",
         time: "",
       },
       Active: false,
       alltasks: {},
+      letterDays: ["S", "M", "T", "W", "T", "F", "S"],
+      daysWeekend: [],
+      fecha: new Date(),
+      dayFecha: "",
+      day_Format: "",
+      isActiveDate: false,
     };
   },
   created() {
@@ -168,6 +173,10 @@ export default {
     if (this.$cookies.isKey("auth-sesion") === true) {
       taskModule.state.token = this.$cookies.get("auth-sesion");
     }
+
+    this.findWeekend(this.fecha);
+    this.dayFecha = moment(this.fecha).format("YYYY-MM-DD");
+    this.dayFormat(this.dayFecha);
   },
   computed: {
     ...mapState("task", ["tasks"]),
@@ -176,7 +185,7 @@ export default {
   components: {
     cardMessageTP,
     BarNavegation,
-    /*Datepicker*/
+    //DatePicker,
     Form,
     Field,
   },
@@ -193,6 +202,25 @@ export default {
           this.taskInfo.time = "";
         }
       });
+    },
+    findWeekend(fecha) {
+      const diasemana = moment(fecha).day();
+      const inicioSemana = moment(fecha).subtract(diasemana, "days");
+      const diasSemana = [];
+
+      for (let i = 0; i < 7; i++) {
+        diasSemana.push(
+          moment(inicioSemana).add(i, "day").format("YYYY-MM-DD")
+        );
+      }
+
+      this.daysWeekend = diasSemana;
+      /*diasSemana.forEach((element) => {
+        this.daysWeekend.push(element.substring(0, 2));
+      })*/
+    },
+    dayFormat(fecha) {
+      this.day_Format = moment(fecha).format("LL");
     },
   },
 };
@@ -395,7 +423,8 @@ export default {
     font-size: 20px;
     font-family: "Ubuntu", sans-serif;
   }
-  .cardNew .newTask hr {
+  .cardNew .newTask hr,
+  .cardDate .datepicker hr {
     margin: auto;
     margin-top: 15px;
     background-color: #3e3e3e;
@@ -492,6 +521,45 @@ export default {
   .nested-leave-to .inner {
     transform: translateY(30px);
     opacity: 0;
+  }
+  .cardDate {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    background-color: transparent;
+    height: 100vh;
+    width: 100vw;
+  }
+  .cardDate .datepicker {
+    background-color: #292929;
+    height: 60%;
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .cardDate .datepicker hr {
+    margin: auto;
+    margin-bottom: 30px;
+    background-color: #3e3e3e;
+    width: 70%;
+    position: relative;
+    bottom: 10;
+  }
+  .cardDate .exitDate {
+    background-color: rgba(217, 217, 217, 0.09);
+    backdrop-filter: blur(8px);
+    width: 100%;
+    height: 40%;
+  }
+  .cardDate .datepi {
+    margin-top: 20%;
+  }
+  .vc-header .vc-arrow,
+  .vc-header .vc-title {
+    background-color: black;
   }
 }
 </style>
