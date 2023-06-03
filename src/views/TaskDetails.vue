@@ -24,7 +24,7 @@
 
     <div class="main"> 
       
-     <form @submit="onSubmitEdit(this.dataTask[0])" v-for="item in dataTask" :key="item._id">
+     <form v-for="item in dataTask" :key="item._id">
       <input type="text" v-model="item.title" name="titulo" id="titulo" :disabled="isDisabledInput">
       <div class="items">
         <div class="item">
@@ -63,7 +63,7 @@
         </div>
         <div class="buttons">
             <button v-if="this.isDisabledInput" type="button" class="done" @click="onSubmitComplete" v-bind:class="{unmark: item.complete}">{{this.textButtom}}</button>
-            <button v-if="!this.isDisabledInput" type="submit" class="save">Save edit</button>
+            <button v-if="!this.isDisabledInput" type="button" class="save" @click="onSubmitEdit">Save edit</button>
           </div>
       </div>
      </form>
@@ -101,8 +101,14 @@ export default {
       this.isDisabledInput = !this.isDisabledInput;
       this.openOption = !this.openOption;
     },
-    onSubmitEdit(taskInfo) {
-      taskModule.actions.editTask(this.$route.params.id, taskInfo);
+    onSubmitEdit() {
+      taskModule.actions
+        .editTask(this.$route.params.id, this.dataTask[0])
+        .then((data) => {
+          if (data.error == null) {
+            this.$router.go(0);
+          }
+        });
     },
     onSubmitComplete() {
       this.dataTask[0].complete = !this.dataTask[0].complete;

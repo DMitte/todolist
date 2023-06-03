@@ -90,7 +90,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          `http://localhost:3000/api/task/delete/${idTask}`,
+          `https://todolistback-production.up.railway.app/api/task/delete/${idTask}`,
           {
             method: "DELETE",
             mode: "cors",
