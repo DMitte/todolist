@@ -24,7 +24,7 @@
 
     <div class="main"> 
       
-     <form v-for="item in dataTask" :key="item._id">
+     <form v-for="item in dataTask" :key="item">
       <input type="text" v-model="item.title" name="titulo" id="titulo" :disabled="isDisabledInput">
       <div class="items">
         <div class="item">
@@ -106,7 +106,7 @@ export default {
         .editTask(this.$route.params.id, this.dataTask[0])
         .then((data) => {
           if (data.error == null) {
-            this.$router.go({ path: `/details/${this.dataTask[0]._id}` });
+            this.isDisabledInput = !this.isDisabledInput;
           }
         });
     },
