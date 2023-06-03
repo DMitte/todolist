@@ -14,11 +14,14 @@ export default {
   actions: {
     async register(usuario) {
       try {
-        const res = await fetch("http://localhost:3000/api/user/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(usuario),
-        });
+        const res = await fetch(
+          "https://todolistback-production.up.railway.app/api/user/register",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(usuario),
+          }
+        );
         const usuDB = await res.json();
         return usuDB;
       } catch (e) {
@@ -27,11 +30,14 @@ export default {
     },
     async login({ commit }, usuario) {
       try {
-        const res = await fetch("http://localhost:3000/api/user/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(usuario),
-        });
+        const res = await fetch(
+          "https://todolistback-production.up.railway.app/api/user/login",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(usuario),
+          }
+        );
         const usuDB = await res.json();
         commit("setToken", usuDB.data.token);
         VueCookies.set("auth-sesion", usuDB.data.token, "1d");
