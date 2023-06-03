@@ -106,7 +106,7 @@ export default {
         .editTask(this.$route.params.id, this.dataTask[0])
         .then((data) => {
           if (data.error == null) {
-            this.$router.go(0);
+            this.$router.go({ path: `/details/${this.dataTask[0]._id}` });
           }
         });
     },
