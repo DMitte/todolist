@@ -23,7 +23,18 @@
     </div>
 
     <div class="main"> 
-      
+      <Transition name="bounce">
+          <loading-overlay
+            :active="isLoading"
+            :can-cancel="false"            
+            :opacity="1"
+            :color="'#6894EC'"
+            :background-color="'#363636'"
+            :height="80"
+            :width="80"
+            :lock-scroll="true"
+          ></loading-overlay>
+        </Transition>
      <form v-for="item in dataTask" :key="item">
       <input type="text" v-model="item.title" name="titulo" id="titulo" :disabled="isDisabledInput">
       <div class="items">
@@ -31,13 +42,30 @@
           <label for="createDate">Created Date</label>
           <p>30 may 2023</p>
         </div>        
+        <div class="item">
+          <label for="date">Date</label>          
+          <div class="inputs-items">
+            <input type="date" name="date" id="date" v-if="!isDisabledInput" v-model="item.datet">
+            <p v-if="isDisabledInput">{{this.dateTask}}</p>
+          </div>          
+          
+        </div>        
+        <div class="item">
+          <label for="time">Time</label>
+          <div class="inputs-items">
+            <input type="time" name="time" id="time" v-if="!isDisabledInput" v-model="item.timet">
+            <p v-if="isDisabledInput">{{item.timet}}</p>
+          </div>
+          
+        </div>        
+        
       </div>
       <div class="mostDetails">
         <div class="descrip">
           <label for="description">Description</label>    
           <textarea name="description" v-model="item.description" id="description" cols="30" rows="10" :disabled="isDisabledInput"></textarea>
         </div>
-        <div class="dateandtime">
+        <!--<div class="dateandtime">
           <div class="date" v-bind:class="{edit: !this.isDisabledInput}">
             <label for="date">Date</label>
             <div class="icon-input">
@@ -60,7 +88,7 @@
           </div>
 
           
-        </div>
+        </div>-->
         <div class="buttons">
             <button v-if="this.isDisabledInput" type="button" class="done" @click="onSubmitComplete" v-bind:class="{unmark: item.complete}">{{this.textButtom}}</button>
             <button v-if="!this.isDisabledInput" type="button" class="save" @click="onSubmitEdit">Save edit</button>
@@ -73,6 +101,9 @@
 </template>
 <script>
 import taskModule from "../store/modules/task";
+import LoadingOverlay from "vue-loading-overlay";
+import "vue-loading-overlay/dist/css/index.css";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -83,7 +114,12 @@ export default {
       createdDate: "12 may 2023",
       completeTask: false,
       textButtom: "Mark Done",
+      isLoading: true,
+      dateTask: "",
     };
+  },
+  components: {
+    LoadingOverlay,
   },
   created() {
     taskModule.actions.onetask(this.$route.params.id).then((data) => {
@@ -92,9 +128,14 @@ export default {
         this.textButtom = "Unmark Done";
       }
       this.completeTask = data.complete;
+      this.dateTask = moment(data.datet).format("LL");
     });
 
     this.idTask = this.$route.params.id;
+
+    setTimeout(() => {
+      this.isLoading = !this.isLoading;
+    }, 1000);
   },
   methods: {
     editButtom() {
@@ -210,12 +251,20 @@ export default {
     font-weight: 600;
     height: 40px;
   }
+  .main form .items {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
   .main form .item {
     display: flex;
   }
   .main form .item label {
     color: rgba(136, 136, 136, 0.93);
     width: 40%;
+  }
+  .main form .item input {
+    height: 20px;
   }
   .main form input {
     height: 40px;
@@ -255,43 +304,16 @@ export default {
     color: #858585;
     font-size: 15px;
   }
-  .main form .dateandtime {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-  .main form .dateandtime .date,
-  .main form .dateandtime .time {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 50%;
-  }
-  .main form .dateandtime .date input:disabled,
-  .main form .dateandtime .time input:disabled {
-  }
-  .main form .dateandtime .date input,
-  .main form .dateandtime .time input {
-    background-color: #2d2d2d;
-    width: 90%;
-    height: 51px;
-    border-radius: 10px;
-    font-size: 15px;
-    padding-left: 30%;
-  }
-  .main form .dateandtime .date.edit input,
-  .main form .dateandtime .time.edit input {
-    padding-left: 20px;
-  }
+
   .main
     form
-    .dateandtime
-    .date
+    .items
+    .inputs-items
     input[type="date"]::-webkit-calendar-picker-indicator,
   .main
     form
-    .dateandtime
-    .time
+    .items
+    .inputs-items
     input[type="time"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
     border-radius: 4px;
@@ -299,20 +321,7 @@ export default {
     opacity: 0.9;
     filter: invert(0.9);
   }
-  .main form .dateandtime .time input {
-    padding-left: 25%;
-  }
-  .main form .dateandtime .date .icon-input,
-  .main form .dateandtime .time .icon-input {
-    position: relative;
-  }
-  .main form .dateandtime .date #ico,
-  .main form .dateandtime .time #ico {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+
   .main form .buttons {
     position: absolute;
     bottom: 20px;
@@ -335,6 +344,25 @@ export default {
   }
   .main form .buttons button.save {
     background-color: rgba(104, 148, 236, 0.5);
+  }
+
+  .bounce-enter-active {
+    animation: bounce-in 0.5s;
+  }
+  .bounce-leave-active {
+    animation: bounce-in 0.5s reverse;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.25);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 }
 </style>

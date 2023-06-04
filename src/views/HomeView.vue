@@ -27,6 +27,18 @@
       </div>
       <hr />
       <div class="cards">
+        <Transition name="bounce">
+          <loading-overlay
+            :active="isLoading"
+            :can-cancel="false"
+            :is-full-page="false"
+            :opacity="1"
+            :color="'#6894EC'"
+            :background-color="'#363636'"
+            :height="80"
+            :width="80"
+          ></loading-overlay>
+        </Transition>
         <router-link
           class="card"
           v-for="tasks in alltasks"
@@ -147,8 +159,10 @@ import { Form, Field } from "vee-validate";
 import { mapState, mapActions } from "vuex";
 import taskModule from "../store/modules/task";
 import moment from "moment";
+import LoadingOverlay from "vue-loading-overlay";
+import "vue-loading-overlay/dist/css/index.css";
 //import { DatePicker } from "v-calendar";
-import "v-calendar/style.css";
+//import "v-calendar/style.css";
 export default {
   data() {
     return {
@@ -166,6 +180,7 @@ export default {
       dayFecha: "",
       day_Format: "",
       isActiveDate: false,
+      isLoading: true,
     };
   },
   created() {
@@ -177,6 +192,10 @@ export default {
     this.findWeekend(this.fecha);
     this.dayFecha = moment(this.fecha).format("YYYY-MM-DD");
     this.dayFormat(this.dayFecha);
+
+    setTimeout(() => {
+      this.isLoading = !this.isLoading;
+    }, 1000);
   },
   computed: {
     ...mapState("task", ["tasks"]),
@@ -188,6 +207,7 @@ export default {
     //DatePicker,
     Form,
     Field,
+    LoadingOverlay,
   },
 
   methods: {
@@ -560,6 +580,25 @@ export default {
   .vc-header .vc-arrow,
   .vc-header .vc-title {
     background-color: black;
+  }
+
+  .bounce-enter-active {
+    animation: bounce-in 0.5s;
+  }
+  .bounce-leave-active {
+    animation: bounce-in 0.5s reverse;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.25);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 }
 </style>
