@@ -28,7 +28,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          "https://todolistback-production.up.railway.app/api/task/all",
+          "https://todolistback.dmitte.repl.co/api/task/all",
           {
             method: "GET",
             mode: "cors",
@@ -49,7 +49,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          `https://todolistback-production.up.railway.app/api/task/${idTask}`,
+          `https://todolistback.dmitte.repl.co/api/task/${idTask}`,
           {
             method: "GET",
             mode: "cors",
@@ -69,7 +69,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          "https://todolistback-production.up.railway.app/api/task/new",
+          "https://todolistback.dmitte.repl.co/api/task/new",
           {
             method: "POST",
             mode: "cors",
@@ -90,7 +90,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          `https://todolistback-production.up.railway.app/api/task/delete/${idTask}`,
+          `https://todolistback.dmitte.repl.co/api/task/delete/${idTask}`,
           {
             method: "DELETE",
             mode: "cors",
@@ -110,7 +110,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          `https://todolistback-production.up.railway.app/api/task/update/${idTask}`,
+          `https://todolistback.dmitte.repl.co/api/task/update/${idTask}`,
           {
             method: "PUT",
             mode: "cors",
