@@ -28,7 +28,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          "https://todolistback.dmitte.repl.co/api/task/all",
+          "https://todolist-back-65ad.onrender.com/api/task/all",
           {
             method: "GET",
             mode: "cors",
@@ -49,7 +49,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          `https://todolistback.dmitte.repl.co/api/task/${idTask}`,
+          `https://todolist-back-65ad.onrender.com/api/task/${idTask}`,
           {
             method: "GET",
             mode: "cors",
@@ -69,7 +69,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          "https://todolistback.dmitte.repl.co/api/task/new",
+          "https://todolist-back-65ad.onrender.com/api/task/new",
           {
             method: "POST",
             mode: "cors",
@@ -90,7 +90,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          `https://todolistback.dmitte.repl.co/api/task/delete/${idTask}`,
+          `https://todolist-back-65ad.onrender.com/api/task/delete/${idTask}`,
           {
             method: "DELETE",
             mode: "cors",
@@ -110,7 +110,7 @@ export default {
       try {
         const token = VueCookies.get("auth-sesion");
         const res = await fetch(
-          `https://todolistback.dmitte.repl.co/api/task/update/${idTask}`,
+          `https://todolist-back-65ad.onrender.com/api/task/update/${idTask}`,
           {
             method: "PUT",
             mode: "cors",
