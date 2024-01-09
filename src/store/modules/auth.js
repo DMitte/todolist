@@ -15,7 +15,7 @@ export default {
     async register(usuario) {
       try {
         const res = await fetch(
-          "https://todolistback.dmitte.repl.co/api/user/register",
+          "https://todolist-back-65ad.onrender.com/api/user/register",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -31,7 +31,7 @@ export default {
     async login({ commit }, usuario) {
       try {
         const res = await fetch(
-          "https://todolistback.dmitte.repl.co/api/user/login",
+          "https://todolist-back-65ad.onrender.com/api/user/login",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
